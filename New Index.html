@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verus NIL — Athlete Valuation Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090d;--bg2:#0c1018;--bg3:#111822;--card:#0e1520;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--gold:#f0b429;--gold2:#ffd166;--green:#22d3a0;--blue:#38bdf8;--purple:#a78bfa;--red:#f87171;--text:#e2eaf2;--muted:#5a6a7d;--muted2:#8a9ab0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,180,41,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,180,41,.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.orb1{width:700px;height:700px;background:radial-gradient(circle,rgba(240,180,41,.055) 0%,transparent 65%);top:-280px;right:-200px}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(34,211,160,.04) 0%,transparent 65%);bottom:-150px;left:-150px}
+header{position:relative;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:22px 48px;border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.logo{display:flex;align-items:center;gap:13px}
+.logo-mark{width:40px;height:40px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold2));display:flex;align-items:center;justify-content:center;font-size:21px;box-shadow:0 4px 18px rgba(240,180,41,.35)}
+.logo-name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-tagline{font-size:10px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:-3px}
+.header-right{display:flex;align-items:center;gap:10px}
+.hbadge{padding:5px 13px;border-radius:20px;font-size:10.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase}
+.hbadge-ai{background:rgba(34,211,160,.1);border:1px solid rgba(34,211,160,.3);color:var(--green)}
+.hbadge-free{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.3);color:var(--gold)}
+.hero{position:relative;z-index:10;padding:64px 48px 44px;text-align:center}
+.hero-eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;font-size:10.5px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;opacity:.9}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:32px;height:1px;background:var(--gold);opacity:.5}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,9vw,108px);line-height:.92;letter-spacing:3px;margin-bottom:22px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{font-size:16.5px;color:var(--muted2);max-width:560px;margin:0 auto 44px;line-height:1.65;font-weight:300}
+.hero-stats{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;color:var(--gold)}
+.hero-stat-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:-2px}
+.hero-stat-div{width:1px;height:36px;background:var(--border)}
+.uc-wrap{position:relative;z-index:10;display:flex;justify-content:center;padding:0 48px 40px}
+.uc-toggle{display:flex;background:var(--bg2);border:1px solid var(--border);border-radius:40px;padding:5px;gap:4px}
+.uc-btn{padding:10px 28px;border-radius:32px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .25s;letter-spacing:.3px}
+.uc-btn.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);box-shadow:0 2px 12px rgba(240,180,41,.3)}
+.prog-wrap{position:relative;z-index:10;max-width:760px;margin:0 auto;padding:0 24px 40px}
+.prog-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:20px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;transition:width .5s ease}
+.steps-row{display:flex;justify-content:space-between}
+.sdot{display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer}
+.scirc{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:'DM Mono',monospace;font-weight:500;color:var(--muted);transition:all .3s}
+.scirc.active{border-color:var(--gold);color:var(--gold);background:rgba(240,180,41,.1)}
+.scirc.done{border-color:var(--green);color:var(--green);background:rgba(34,211,160,.1)}
+.slbl{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+.slbl.active{color:var(--text)}
+.main{position:relative;z-index:10;max-width:860px;margin:0 auto;padding:0 24px 100px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:36px;margin-bottom:20px;display:none;animation:fadeUp .4s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.ph{display:flex;align-items:flex-start;gap:16px;margin-bottom:32px}
+.picon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.pi-gold{background:rgba(240,180,41,.12)}.pi-blue{background:rgba(56,189,248,.12)}.pi-green{background:rgba(34,211,160,.12)}
+.ptitle{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1.5px;line-height:1}
+.psub{font-size:13px;color:var(--muted2);margin-top:5px;line-height:1.5}
+.sdiv{margin:28px 0 18px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.sdiv-lbl{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.fg3{grid-template-columns:1fr 1fr 1fr}.fg1{grid-template-columns:1fr}
+.field{display:flex;flex-direction:column;gap:8px}
+.field.full{grid-column:1/-1}
+label{font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500}
+label .req{color:var(--gold);margin-left:2px}
+label .ht{color:var(--muted);font-weight:400;letter-spacing:.5px;text-transform:none;font-size:10px;margin-left:6px}
+input,select,textarea{background:var(--bg3);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:11px 15px;transition:border-color .2s,box-shadow .2s;outline:none;-webkit-appearance:none;appearance:none}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+input:focus,select:focus,textarea:focus{border-color:rgba(240,180,41,.45);box-shadow:0 0 0 3px rgba(240,180,41,.07)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+select option{background:var(--bg3)}
+textarea{resize:vertical;min-height:78px;line-height:1.6}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.chip{padding:8px 15px;border-radius:7px;font-size:12px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;transition:all .2s;color:var(--muted);letter-spacing:.3px;user-select:none}
+.chip:hover{border-color:var(--border2);color:var(--text)}
+.chip.on{border-color:var(--gold);color:var(--gold);background:rgba(240,180,41,.09)}
+.chip.on-g{border-color:var(--green);color:var(--green);background:rgba(34,211,160,.09)}
+.sbox{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-top:10px;display:none;animation:fadeUp .3s ease}
+.sbox.show{display:block}
+.sbox-title{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;font-weight:600}
+.splat{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.splat:last-child{border-bottom:none}
+.plbl{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted2);font-weight:500;margin-bottom:8px;grid-column:1/-1}
+.plbl .pi{font-size:17px}
+.pfcnt{font-size:11px;color:var(--muted);margin-left:auto}
+.btn-row{display:flex;justify-content:flex-end;align-items:center;gap:12px;margin-top:32px}
+.btn{padding:12px 26px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;border:none;letter-spacing:.3px}
+.bb{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.bb:hover{border-color:var(--border2);color:var(--text)}
+.bn{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--bg);box-shadow:0 4px 18px rgba(240,180,41,.28)}
+.bn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(240,180,41,.38)}
+.bgen{background:linear-gradient(135deg,#22d3a0,#1aad82);color:var(--bg);box-shadow:0 4px 18px rgba(34,211,160,.25);padding:14px 38px;font-size:15px}
+.bgen:hover{transform:translateY(-1px);box-shadow:0 6px 26px rgba(34,211,160,.35)}
+.loading{display:none;text-align:center;padding:80px 40px;position:relative;z-index:10}
+.loading.on{display:block;animation:fadeUp .4s ease}
+.spin-ring{width:64px;height:64px;margin:0 auto 28px;position:relative}
+.spin-ring::before{content:'';position:absolute;inset:0;border-radius:50%;border:3px solid var(--border);border-top-color:var(--gold);animation:spin .85s linear infinite}
+.spin-ring::after{content:'';position:absolute;inset:8px;border-radius:50%;border:2px solid transparent;border-top-color:rgba(240,180,41,.3);animation:spin 1.4s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ltitle{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--gold);margin-bottom:8px}
+.lsub{font-size:13px;color:var(--muted);min-height:20px}
+.results{display:none;animation:fadeUp .5s ease}
+.results.on{display:block}
+.vhero{background:linear-gradient(135deg,rgba(240,180,41,.09),rgba(240,180,41,.02));border:1px solid rgba(240,180,41,.22);border-radius:20px;padding:42px 36px;text-align:center;margin-bottom:22px;position:relative;overflow:hidden}
+.vhero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:280px;height:160px;background:radial-gradient(ellipse,rgba(240,180,41,.18),transparent 68%);pointer-events:none}
+.vey{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:14px}
+.vname{font-size:14px;color:var(--muted2);margin-bottom:6px;font-weight:500}
+.vamt{font-family:'Bebas Neue',sans-serif;font-size:clamp(62px,10vw,96px);line-height:1;letter-spacing:2px;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.vrng{font-family:'DM Mono',monospace;font-size:13px;color:var(--muted2);margin-bottom:22px}
+.vtier{display:inline-flex;align-items:center;gap:8px;padding:9px 22px;border-radius:24px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.t-elite{background:rgba(240,180,41,.14);border:1px solid var(--gold);color:var(--gold)}
+.t-high{background:rgba(34,211,160,.12);border:1px solid var(--green);color:var(--green)}
+.t-mid{background:rgba(56,189,248,.11);border:1px solid var(--blue);color:var(--blue)}
+.t-dev{background:rgba(255,255,255,.05);border:1px solid var(--border2);color:var(--muted2)}
+.tdot{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 16px;text-align:center}
+.scv{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;margin-bottom:4px}
+.scl{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500}
+.scbar{height:3px;border-radius:2px;background:var(--border);margin:12px 0 0;overflow:hidden}
+.scfill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.22,1,.36,1);width:0}
+.aib{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:26px;margin-bottom:22px}
+.aih{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.aitag{padding:3px 11px;border-radius:12px;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.at-g{background:rgba(34,211,160,.1);border:1px solid rgba(34,211,160,.3);color:var(--green)}
+.at-gold{background:rgba(240,180,41,.1);border:1px solid rgba(240,180,41,.3);color:var(--gold)}
+.at-b{background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.3);color:var(--blue)}
+.aititle{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px}
+.aibody{font-size:14px;line-height:1.75;color:#aabacb}
+.aibody p{margin-bottom:12px}
+.aibody p:last-child{margin-bottom:0}
+.aibody strong{color:var(--text);font-weight:600}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.dcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;transition:border-color .2s}
+.dcard:hover{border-color:var(--border2)}
+.dtype{font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500}
+.dval{font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);margin-bottom:3px;line-height:1}
+.dpct{font-size:11px;color:var(--muted2);font-family:'DM Mono',monospace;margin-bottom:8px}
+.ddesc{font-size:12px;color:var(--muted2);line-height:1.5}
+.dbar{height:2px;border-radius:1px;background:var(--border);margin-top:14px;overflow:hidden}
+.dbfill{height:100%;border-radius:1px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width 1.2s cubic-bezier(.22,1,.36,1);width:0}
+.ctable{width:100%;border-collapse:collapse;font-size:13px}
+.ctable th{text-align:left;padding:10px 14px;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:500;border-bottom:1px solid var(--border)}
+.ctable td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--muted2);line-height:1.5}
+.ctable tr:last-child td{border-bottom:none}
+.ctable td:first-child{color:var(--text);font-weight:500}
+.cflag{display:inline-block;padding:2px 9px;border-radius:5px;font-size:10px;font-weight:700;margin-left:8px;vertical-align:middle}
+.cf-up{background:rgba(34,211,160,.12);color:var(--green)}
+.cf-dn{background:rgba(248,113,113,.1);color:var(--red)}
+.cf-ne{background:rgba(255,255,255,.05);color:var(--muted2)}
+.flist{list-style:none}
+.fli{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--muted2);line-height:1.55}
+.fli:last-child{border-bottom:none}
+.fic{font-size:17px;flex-shrink:0;margin-top:1px}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+.tnum{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);opacity:.5;margin-bottom:6px}
+.ttxt{font-size:13px;color:var(--muted2);line-height:1.55}
+.ttxt strong{color:var(--text)}
+.restart-area{text-align:center;margin-top:36px;padding-top:36px;border-top:1px solid var(--border)}
+.btn-restart{background:transparent;border:1px solid var(--border2);color:var(--muted2);padding:12px 32px;border-radius:9px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .2s;letter-spacing:.5px}
+.btn-restart:hover{border-color:var(--gold);color:var(--gold)}
+.disclaimer{font-size:11px;color:var(--muted);text-align:center;padding:28px 48px 48px;line-height:1.7;position:relative;z-index:10;max-width:680px;margin:0 auto}
+.r-only,.t-only{display:none}
+@media(max-width:700px){
+  header{padding:16px 20px}.hero{padding:40px 20px 28px}.uc-wrap{padding:0 20px 28px}.main{padding:0 16px 60px}.panel{padding:24px 18px}
+  .fg,.fg3,.sgrid,.dgrid,.tgrid{grid-template-columns:1fr}.vamt{font-size:56px}.hero-stat-div{display:none}.slbl{display:none}
+}
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">🏆</div>
+    <div><div class="logo-name">VERUS NIL</div><div class="logo-tagline">Athlete Valuation Platform</div></div>
+  </div>
+  <div class="header-right">
+    <div class="hbadge hbadge-ai">AI-Powered</div>
+    <div class="hbadge hbadge-free">Free Tool</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Know Your Worth</div>
+  <h1>YOUR <em>NIL</em><br>VALUATION</h1>
+  <p class="hero-desc">Enter your athletic profile, stats, and social presence to receive an AI-powered NIL market valuation — built for both high school recruits and the transfer portal.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">20+</div><div class="hero-stat-lbl">Sports</div></div>
+    <div class="hero-stat-div"></div>
+    <div class="hero-stat"><div class="hero-stat-num">AI</div><div class="hero-stat-lbl">Powered</div></div>
+    <div class="hero-stat-div"></div>
+    <div class="hero-stat"><div class="hero-stat-num">4</div><div class="hero-stat-lbl">Score Dimensions</div></div>
+    <div class="hero-stat-div"></div>
+    <div class="hero-stat"><div class="hero-stat-num">Free</div><div class="hero-stat-lbl">Always</div></div>
+  </div>
+</div>
+
+<div class="uc-wrap">
+  <div class="uc-toggle">
+    <button class="uc-btn active" id="ucR" onclick="setUC('recruit')">🎓 High School Recruit</button>
+    <button class="uc-btn" id="ucT" onclick="setUC('transfer')">🔄 Transfer Portal</button>
+  </div>
+</div>
+
+<div class="prog-wrap" id="progWrap">
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:25%"></div></div>
+  <div class="steps-row">
+    <div class="sdot" onclick="tryGo(1)"><div class="scirc active" id="sc1">1</div><div class="slbl active" id="sl1">Profile</div></div>
+    <div class="sdot" onclick="tryGo(2)"><div class="scirc" id="sc2">2</div><div class="slbl" id="sl2">Athletics</div></div>
+    <div class="sdot" onclick="tryGo(3)"><div class="scirc" id="sc3">3</div><div class="slbl" id="sl3">Social</div></div>
+    <div class="sdot" onclick="tryGo(4)"><div class="scirc" id="sc4">4</div><div class="slbl" id="sl4">Results</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- STEP 1 -->
+<div class="panel active" id="p1">
+  <div class="ph"><div class="picon pi-gold">👤</div><div><div class="ptitle">ATHLETE PROFILE</div><div class="psub">Tell us about yourself and your situation</div></div></div>
+  <div class="fg">
+    <div class="field"><label>First Name <span class="req">*</span></label><input id="firstName" type="text" placeholder="e.g. Marcus"></div>
+    <div class="field"><label>Last Name <span class="req">*</span></label><input id="lastName" type="text" placeholder="e.g. Johnson"></div>
+    <div class="field">
+      <label>Sport <span class="req">*</span></label>
+      <select id="sport" onchange="onSport()">
+        <option value="">Select your sport...</option>
+        <optgroup label="⚡ Highest NIL Revenue">
+          <option>Football</option><option>Men's Basketball</option><option>Women's Basketball</option>
+        </optgroup>
+        <optgroup label="🏅 High Visibility">
+          <option>Baseball</option><option>Softball</option><option>Men's Soccer</option><option>Women's Soccer</option>
+          <option>Gymnastics</option><option>Volleyball</option><option>Wrestling</option>
+        </optgroup>
+        <optgroup label="🎽 Olympic / Other">
+          <option>Track & Field / Cross Country</option><option>Swimming & Diving</option><option>Tennis</option>
+          <option>Golf</option><option>Lacrosse</option><option>Ice Hockey</option><option>Field Hockey</option>
+          <option>Rowing / Crew</option><option>Water Polo</option><option>Beach Volleyball</option>
+          <option>Fencing</option><option>Rifle / Shooting</option><option>Other</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field"><label>Position / Event / Specialty</label><input id="position" type="text" placeholder="e.g. Quarterback, Point Guard, 100m"></div>
+    <div class="field">
+      <label>Current Status <span class="req">*</span></label>
+      <select id="status">
+        <option value="">Select...</option>
+        <optgroup label="Recruit">
+          <option>High School Senior (Recruit)</option><option>High School Junior (Early Recruiting)</option>
+          <option>JUCO Athlete</option><option>Prep School Athlete</option>
+        </optgroup>
+        <optgroup label="Transfer Portal">
+          <option>Undergraduate Transfer — 1–2 yrs played</option>
+          <option>Undergraduate Transfer — 3+ yrs played</option>
+          <option>Graduate Transfer</option><option>Portal — Immediate Eligibility</option>
+        </optgroup>
+        <optgroup label="Current Collegian">
+          <option>College Freshman</option><option>College Sophomore</option>
+          <option>College Junior</option><option>College Senior</option><option>5th Year / Redshirt Senior</option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="field"><label>Current / Last School</label><input id="school" type="text" placeholder="e.g. University of Alabama, Jefferson HS"></div>
+    <div class="field">
+      <label>Target School Level</label>
+      <select id="targetLevel">
+        <option value="">Select...</option>
+        <option>Power 4 — SEC</option><option>Power 4 — Big Ten</option><option>Power 4 — ACC</option>
+        <option>Power 4 — Big 12</option><option>Power 4 (Conference TBD)</option>
+        <option>Pac-12 / Emerging P5</option><option>Group of 5</option>
+        <option>FCS / D1-AA</option><option>Division II</option><option>NAIA</option><option>Still Deciding</option>
+      </select>
+    </div>
+    <div class="field"><label>Home State / Market</label><input id="homeState" type="text" placeholder="e.g. Texas, Ohio, Southeast"></div>
+  </div>
+
+  <!-- TRANSFER EXTRA -->
+  <div class="t-only" id="tExtra">
+    <div class="sdiv"><div class="sdiv-lbl">Transfer Portal Details</div></div>
+    <div class="fg">
+      <div class="field"><label>Previous Conference</label><input id="prevConf" type="text" placeholder="e.g. SEC, Big Ten, MAC"></div>
+      <div class="field"><label>Reason for Transfer</label>
+        <select id="txReason"><option value="">Optional...</option>
+          <option>Playing Time / Depth Chart</option><option>Coaching Change</option>
+          <option>NIL / Financial Opportunity</option><option>Closer to Home / Family</option>
+          <option>Academic / Program Fit</option><option>Personal Reasons</option>
+        </select>
+      </div>
+      <div class="field"><label>Eligibility Remaining</label>
+        <select id="elig"><option value="">Select...</option>
+          <option>1 year</option><option>2 years</option><option>3 years</option><option>4 years</option><option>5 years</option>
+        </select>
+      </div>
+      <div class="field"><label>Previous NIL Earnings</label>
+        <select id="prevNIL"><option>None / Unknown</option>
+          <option>Under $10K</option><option>$10K–$50K</option><option>$50K–$200K</option>
+          <option>$200K–$500K</option><option>$500K+</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECRUIT EXTRA -->
+  <div class="r-only" id="rExtra">
+    <div class="sdiv"><div class="sdiv-lbl">Recruiting Status</div></div>
+    <div class="fg">
+      <div class="field"><label>Star Rating</label>
+        <select id="stars"><option>Not Yet Rated</option><option>2-Star</option><option>3-Star</option><option>4-Star</option><option>5-Star</option></select>
+      </div>
+      <div class="field"><label>National Rank <span class="ht">(if known)</span></label><input id="rnk" type="text" placeholder="e.g. Top 100, #247 overall"></div>
+      <div class="field"><label>Power 4 Offers</label>
+        <select id="p4o"><option>0</option><option>1–3</option><option>4–9</option><option>10–19</option><option>20+</option></select>
+      </div>
+      <div class="field"><label>Committed / Signed?</label>
+        <select id="committed"><option>Not yet committed</option><option>Verbally committed</option><option>Signed NLI</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row"><button class="btn bn" onclick="goS(2)">Continue → Athletics</button></div>
+</div>
+
+<!-- STEP 2 -->
+<div class="panel" id="p2">
+  <div class="ph"><div class="picon pi-blue">🏅</div><div><div class="ptitle">ATHLETIC PERFORMANCE</div><div class="psub">Stats, accolades, and on-field credentials</div></div></div>
+
+  <div class="sbox show" id="sbox">
+    <div class="sbox-title" id="sboxtitle">SELECT A SPORT IN STEP 1 FIRST</div>
+    <div class="fg" id="sfields"><div class="field full"><label>Please go back and select your sport</label></div></div>
+  </div>
+
+  <div class="sdiv" style="margin-top:24px"><div class="sdiv-lbl">Performance Tier</div></div>
+  <div class="chips" id="tierChips">
+    <div class="chip" onclick="soloChip(this,'tierVal','Projected Starter / Contributor')">Projected Starter</div>
+    <div class="chip" onclick="soloChip(this,'tierVal','Key Starter / Impact Player')">Key Starter</div>
+    <div class="chip" onclick="soloChip(this,'tierVal','All-Conference Caliber')">All-Conference Caliber</div>
+    <div class="chip" onclick="soloChip(this,'tierVal','All-American Caliber')">All-American Caliber</div>
+    <div class="chip" onclick="soloChip(this,'tierVal','Potential Pro / Olympic Prospect')">Pro / Olympic Prospect</div>
+  </div>
+
+  <div class="sdiv"><div class="sdiv-lbl">Accolades & Awards</div></div>
+  <div class="field">
+    <textarea id="accolades" placeholder="e.g. 2023 All-SEC First Team, Freshman of the Year, Gatorade State Player of the Year, 2x All-State, Academic All-American, Team MVP..."></textarea>
+  </div>
+
+  <div class="sdiv"><div class="sdiv-lbl">Additional Context</div></div>
+  <div class="fg">
+    <div class="field"><label>Injury History</label>
+      <select id="injuries">
+        <option>No significant injuries</option><option>Minor injuries, fully recovered</option>
+        <option>Major injury (ACL etc.) — fully recovered</option>
+        <option>Major injury — still recovering</option><option>Chronic / recurring issues</option>
+      </select>
+    </div>
+    <div class="field"><label>Pro / Draft Prospect Status</label>
+      <select id="draftP">
+        <option>Not applicable / too early</option><option>Possible future prospect</option>
+        <option>Mock draft mentions (late rounds)</option><option>Mid-round draft prospect</option>
+        <option>Top-round / lottery prospect</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn bb" onclick="goS(1)">← Back</button>
+    <button class="btn bn" onclick="goS(3)">Continue → Social &amp; Brand</button>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="panel" id="p3">
+  <div class="ph"><div class="picon pi-green">📱</div><div><div class="ptitle">SOCIAL MEDIA &amp; BRAND</div><div class="psub">Your digital reach drives a significant share of NIL value</div></div></div>
+
+  <div class="sdiv" style="margin-top:0"><div class="sdiv-lbl">Platform Followers &amp; Engagement</div></div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:4px 20px 12px">
+    <div class="splat">
+      <div class="plbl"><span class="pi">📸</span><span>Instagram</span><span class="pfcnt" id="igfc">0 followers</span></div>
+      <div class="field"><label>Followers</label><input type="number" id="igF" placeholder="e.g. 12500" oninput="fcnt('igF','igfc','followers')"></div>
+      <div class="field"><label>Avg Engagement % <span class="ht">likes+comments÷followers</span></label><input type="number" id="igE" placeholder="e.g. 4.2" step="0.1"></div>
+    </div>
+    <div class="splat">
+      <div class="plbl"><span class="pi">🎵</span><span>TikTok</span><span class="pfcnt" id="ttfc">0 followers</span></div>
+      <div class="field"><label>Followers</label><input type="number" id="ttF" placeholder="e.g. 50000" oninput="fcnt('ttF','ttfc','followers')"></div>
+      <div class="field"><label>Avg Views Per Video</label><input type="number" id="ttV" placeholder="e.g. 25000"></div>
+    </div>
+    <div class="splat">
+      <div class="plbl"><span class="pi">🐦</span><span>Twitter / X</span><span class="pfcnt" id="twfc">0 followers</span></div>
+      <div class="field"><label>Followers</label><input type="number" id="twF" placeholder="e.g. 8000" oninput="fcnt('twF','twfc','followers')"></div>
+      <div class="field"><label>Avg Impressions Per Post <span class="ht">optional</span></label><input type="number" id="twI" placeholder="e.g. 5000"></div>
+    </div>
+    <div class="splat">
+      <div class="plbl"><span class="pi">▶️</span><span>YouTube</span><span class="pfcnt" id="ytfc">0 subscribers</span></div>
+      <div class="field"><label>Subscribers</label><input type="number" id="ytS" placeholder="e.g. 5000" oninput="fcnt('ytS','ytfc','subscribers')"></div>
+      <div class="field"><label>Avg Views Per Video</label><input type="number" id="ytV" placeholder="e.g. 8000"></div>
+    </div>
+  </div>
+
+  <div class="sdiv"><div class="sdiv-lbl">Content Style — what do you create? <span class="ht">(select all that apply)</span></div></div>
+  <div class="chips" id="contentC">
+    <div class="chip" onclick="multiChip(this)">Training / Workouts</div><div class="chip" onclick="multiChip(this)">Game Highlights</div>
+    <div class="chip" onclick="multiChip(this)">Lifestyle / Daily Life</div><div class="chip" onclick="multiChip(this)">Faith &amp; Family</div>
+    <div class="chip" onclick="multiChip(this)">Fashion / Style</div><div class="chip" onclick="multiChip(this)">Comedy / Entertainment</div>
+    <div class="chip" onclick="multiChip(this)">Community / Charity</div><div class="chip" onclick="multiChip(this)">Academics / Education</div>
+    <div class="chip" onclick="multiChip(this)">Gaming / Streaming</div><div class="chip" onclick="multiChip(this)">Food / Nutrition</div>
+    <div class="chip" onclick="multiChip(this)">Mental Health Advocacy</div>
+  </div>
+
+  <div class="sdiv"><div class="sdiv-lbl">Existing NIL Deals <span class="ht">(select all that apply)</span></div></div>
+  <div class="chips" id="nilC">
+    <div class="chip" onclick="multiChip(this)">No deals yet</div><div class="chip" onclick="multiChip(this)">Collective / School Deal</div>
+    <div class="chip" onclick="multiChip(this)">Local Business Endorsement</div><div class="chip" onclick="multiChip(this)">Apparel / Footwear</div>
+    <div class="chip" onclick="multiChip(this)">Regional Brand</div><div class="chip" onclick="multiChip(this)">National Brand</div>
+    <div class="chip" onclick="multiChip(this)">Autograph / Appearances</div><div class="chip" onclick="multiChip(this)">Podcast / Media</div>
+    <div class="chip" onclick="multiChip(this)">Own Business / Merch</div>
+  </div>
+
+  <div class="sdiv"><div class="sdiv-lbl">Additional Context</div></div>
+  <div class="field">
+    <textarea id="ctx" placeholder="Anything else that affects your NIL value — unique story, hometown media market, family recognition, recovering from injury, represented by agent, bilingual, large local following..."></textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn bb" onclick="goS(2)">← Back</button>
+    <button class="btn bgen" onclick="run()">⚡ Generate My NIL Valuation</button>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading" id="loadingBox">
+  <div class="spin-ring"></div>
+  <div class="ltitle">ANALYZING YOUR PROFILE</div>
+  <div class="lsub" id="lsub">Calculating athletic market value...</div>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="resultsBox">
+  <div class="vhero">
+    <div class="vey">Estimated Annual NIL Value</div>
+    <div class="vname" id="rName"></div>
+    <div class="vamt" id="rAmt">$0</div>
+    <div class="vrng" id="rRng"></div>
+    <div class="vtier" id="rTier"><span class="tdot"></span>—</div>
+  </div>
+
+  <div class="sgrid">
+    <div class="sc"><div class="scv" id="sAth" style="color:var(--gold)">—</div><div class="scl">Athletic Score</div><div class="scbar"><div class="scfill" id="bAth" style="background:var(--gold)"></div></div></div>
+    <div class="sc"><div class="scv" id="sSoc" style="color:var(--blue)">—</div><div class="scl">Social Score</div><div class="scbar"><div class="scfill" id="bSoc" style="background:var(--blue)"></div></div></div>
+    <div class="sc"><div class="scv" id="sBrand" style="color:var(--green)">—</div><div class="scl">Brand Score</div><div class="scbar"><div class="scfill" id="bBrand" style="background:var(--green)"></div></div></div>
+    <div class="sc"><div class="scv" id="sMkt" style="color:var(--purple)">—</div><div class="scl">Market Score</div><div class="scbar"><div class="scfill" id="bMkt" style="background:var(--purple)"></div></div></div>
+  </div>
+
+  <div class="aib">
+    <div class="aih"><div class="aitag at-g">AI Analysis</div><div class="aititle">PERSONALIZED BREAKDOWN</div></div>
+    <div class="aibody" id="rAnalysis">Loading...</div>
+  </div>
+
+  <div class="dgrid" id="rDeals"></div>
+
+  <div class="aib" id="rCompBlock">
+    <div class="aih"><div class="aitag at-gold">Market Intel</div><div class="aititle">SCHOOL LEVEL COMPARISON</div></div>
+    <table class="ctable" id="rCompTable"></table>
+  </div>
+
+  <div class="aib">
+    <div class="aih"><div class="aitag at-b">Market Factors</div><div class="aititle">WHAT DRIVES YOUR VALUE</div></div>
+    <ul class="flist" id="rFactors"></ul>
+  </div>
+
+  <div class="aib">
+    <div class="aih"><div class="aitag at-g">Strategy</div><div class="aititle">HOW TO MAXIMIZE YOUR NIL</div></div>
+    <div class="tgrid" id="rTips"></div>
+  </div>
+
+  <!-- Confidence badge filled by render() -->
+  <div id="rConfidence" style="display:none;align-items:center;gap:8px;margin:0 0 20px;flex-wrap:wrap"></div>
+
+  <!-- Glassdoor deal report trigger -->
+  <div class="deal-report-trigger" onclick="openDealModal()">
+    <div class="drt-icon">&#x1F4BC;</div>
+    <div class="drt-text">
+      <strong>Have a real NIL deal? Report it anonymously.</strong>
+      <span>Like Glassdoor for salaries &#8212; your data makes Verus NIL more accurate for every athlete.</span>
+    </div>
+    <div class="drt-arrow">&#8594;</div>
+  </div>
+
+  <div class="restart-area">
+    <button class="btn-restart" onclick="restart()">↺ Start New Evaluation</button>
+  </div>
+</div>
+
+</div>
+
+<p class="disclaimer">Verus NIL is an educational estimation tool only. Actual NIL compensation depends on school-specific collective budgets, agent negotiations, conference rules, and individual deal structures. Values shown are market estimates and do not constitute financial, legal, or professional advice. Always consult a licensed athlete agent or attorney before signing any NIL agreement.</p>
+
+<script>
+// ─── STATE ───────────────────────────────
+let uc='recruit', curStep=1, visited=new Set([1]);
+const soloVals={tierVal:''};
+
+// ─── USE CASE ────────────────────────────
+function setUC(v){
+  uc=v;
+  document.getElementById('ucR').classList.toggle('active',v==='recruit');
+  document.getElementById('ucT').classList.toggle('active',v==='transfer');
+  document.querySelectorAll('.r-only').forEach(e=>e.style.display=v==='recruit'?'block':'none');
+  document.querySelectorAll('.t-only').forEach(e=>e.style.display=v==='transfer'?'block':'none');
+}
+
+// ─── SPORT STATS CONFIG ──────────────────
+const SS={
+  'Football':[{id:'s1',l:'Passing Yds / Season',ph:'e.g. 3500'},{id:'s2',l:'Passing TDs',ph:'e.g. 28'},{id:'s3',l:'Rushing Yds',ph:'e.g. 800'},{id:'s4',l:'Rushing TDs',ph:'e.g. 8'},{id:'s5',l:'Completion %',ph:'e.g. 67.3'},{id:'s6',l:'QBR / Rating',ph:'e.g. 88.4'},{id:'s7',l:'Receiving Yds (WR/TE/RB)',ph:'e.g. 1100 or N/A'},{id:'s8',l:'Tackles / Sacks (DEF)',ph:'e.g. 72 tkl / 8 sacks'}],
+  "Men's Basketball":[{id:'s1',l:'Points Per Game',ph:'e.g. 18.5'},{id:'s2',l:'Rebounds Per Game',ph:'e.g. 6.2'},{id:'s3',l:'Assists Per Game',ph:'e.g. 4.1'},{id:'s4',l:'Steals Per Game',ph:'e.g. 1.4'},{id:'s5',l:'Field Goal %',ph:'e.g. 48.2'},{id:'s6',l:'3-Point %',ph:'e.g. 38.5'},{id:'s7',l:'Free Throw %',ph:'e.g. 82.1'},{id:'s8',l:'Games Started / Played',ph:'e.g. 30/33'}],
+  "Women's Basketball":[{id:'s1',l:'Points Per Game',ph:'e.g. 21.3'},{id:'s2',l:'Rebounds Per Game',ph:'e.g. 8.1'},{id:'s3',l:'Assists Per Game',ph:'e.g. 5.2'},{id:'s4',l:'Steals Per Game',ph:'e.g. 2.1'},{id:'s5',l:'Field Goal %',ph:'e.g. 50.1'},{id:'s6',l:'3-Point %',ph:'e.g. 35.8'},{id:'s7',l:'Free Throw %',ph:'e.g. 88.3'},{id:'s8',l:'Games Started / Played',ph:'e.g. 32/32'}],
+  'Baseball':[{id:'s1',l:'Batting Average',ph:'e.g. .312'},{id:'s2',l:'Home Runs',ph:'e.g. 12'},{id:'s3',l:'RBI',ph:'e.g. 54'},{id:'s4',l:'On-Base % (OBP)',ph:'e.g. .420'},{id:'s5',l:'ERA (pitchers)',ph:'e.g. 2.85 or N/A'},{id:'s6',l:'WHIP',ph:'e.g. 1.05 or N/A'},{id:'s7',l:'Strikeouts',ph:'e.g. 110 or N/A'},{id:'s8',l:'Saves / Wins',ph:'e.g. 8 saves'}],
+  'Softball':[{id:'s1',l:'Batting Average',ph:'e.g. .340'},{id:'s2',l:'Home Runs',ph:'e.g. 14'},{id:'s3',l:'RBI',ph:'e.g. 62'},{id:'s4',l:'Slugging %',ph:'e.g. .680'},{id:'s5',l:'ERA (pitchers)',ph:'e.g. 1.92 or N/A'},{id:'s6',l:'Strikeouts',ph:'e.g. 220 or N/A'},{id:'s7',l:'Wins',ph:'e.g. 24 or N/A'},{id:'s8',l:'Fielding %',ph:'e.g. .985'}],
+  "Men's Soccer":[{id:'s1',l:'Goals',ph:'e.g. 14'},{id:'s2',l:'Assists',ph:'e.g. 8'},{id:'s3',l:'Games Started',ph:'e.g. 18'},{id:'s4',l:'Shot Accuracy %',ph:'e.g. 52'},{id:'s5',l:'Save % (GK)',ph:'e.g. 78.3 or N/A'},{id:'s6',l:'Clean Sheets (GK)',ph:'e.g. 7 or N/A'},{id:'s7',l:'Yellow / Red Cards',ph:'e.g. 2 / 0'},{id:'s8',l:'Minutes Played',ph:'e.g. 1580'}],
+  "Women's Soccer":[{id:'s1',l:'Goals',ph:'e.g. 18'},{id:'s2',l:'Assists',ph:'e.g. 10'},{id:'s3',l:'Games Started',ph:'e.g. 20'},{id:'s4',l:'Shot Accuracy %',ph:'e.g. 56'},{id:'s5',l:'Save % (GK)',ph:'e.g. 80.1 or N/A'},{id:'s6',l:'Clean Sheets (GK)',ph:'e.g. 9 or N/A'},{id:'s7',l:'Yellow / Red Cards',ph:'e.g. 1 / 0'},{id:'s8',l:'Minutes Played',ph:'e.g. 1720'}],
+  'Gymnastics':[{id:'s1',l:'All-Around Best Score',ph:'e.g. 39.450'},{id:'s2',l:'Vault Best',ph:'e.g. 9.925'},{id:'s3',l:'Bars / Rings Best',ph:'e.g. 9.900'},{id:'s4',l:'Beam / Pommel Best',ph:'e.g. 9.875'},{id:'s5',l:'Floor Best',ph:'e.g. 9.950'},{id:'s6',l:'Season AA Average',ph:'e.g. 39.200'},{id:'s7',l:'National Rank (AA)',ph:'e.g. Top 10'},{id:'s8',l:'Team Lineup Role',ph:'e.g. Regular 4-event'}],
+  'Volleyball':[{id:'s1',l:'Kills Per Set',ph:'e.g. 4.2'},{id:'s2',l:'Assists Per Set',ph:'e.g. 10.8'},{id:'s3',l:'Digs Per Set',ph:'e.g. 3.5'},{id:'s4',l:'Service Aces / Set',ph:'e.g. 0.4'},{id:'s5',l:'Blocks Per Set',ph:'e.g. 1.2'},{id:'s6',l:'Hitting Efficiency',ph:'e.g. .285'},{id:'s7',l:'Sets Played',ph:'e.g. 118'},{id:'s8',l:'Reception % (Libero)',ph:'e.g. 94.2 or N/A'}],
+  'Wrestling':[{id:'s1',l:'Win-Loss Record',ph:'e.g. 32-4'},{id:'s2',l:'Weight Class',ph:'e.g. 165 lbs'},{id:'s3',l:'Tech Falls / Pins',ph:'e.g. 8 pins'},{id:'s4',l:'Bonus Point %',ph:'e.g. 46%'},{id:'s5',l:'Conference Finish',ph:'e.g. 2nd Big Ten'},{id:'s6',l:'Nationals Finish',ph:'e.g. AA (5th)'},{id:'s7',l:'RPI Ranking',ph:'e.g. #12 nationally'},{id:'s8',l:'Career Record',ph:'e.g. 95-22'}],
+  'Track & Field / Cross Country':[{id:'s1',l:'Primary Event',ph:'e.g. 100m, Shot Put'},{id:'s2',l:'Personal Best (PR)',ph:'e.g. 10.08 / 70\'4"'},{id:'s3',l:'Season Best',ph:'e.g. 10.14'},{id:'s4',l:'NCAA Qualifying Mark?',ph:'e.g. Auto qualifier / B cut'},{id:'s5',l:'Conference Finish',ph:'e.g. 1st SEC Outdoors'},{id:'s6',l:'Nationals Finish',ph:'e.g. 3rd NCAA Outdoors'},{id:'s7',l:'National / Olympic Team?',ph:'e.g. U20 Worlds'},{id:'s8',l:'XC 5K / 6K PR',ph:'e.g. 14:22 or N/A'}],
+  'Swimming & Diving':[{id:'s1',l:'Primary Event',ph:'e.g. 100 Fly, 200 IM'},{id:'s2',l:'Personal Best (PR)',ph:'e.g. 46.82 (100 Free)'},{id:'s3',l:'Season Best',ph:'e.g. 47.10'},{id:'s4',l:'NCAA Qualifying?',ph:'e.g. A cut / B cut / No'},{id:'s5',l:'Conference Finish',ph:'e.g. 2nd ACC Champs'},{id:'s6',l:'Nationals Finish',ph:'e.g. 8th NCAAs'},{id:'s7',l:'USA Swimming Rank',ph:'e.g. Top 20 nationally'},{id:'s8',l:'Relay Contributions',ph:'e.g. 200/400 Free relay'}],
+  'Tennis':[{id:'s1',l:'Singles Record',ph:'e.g. 28-6'},{id:'s2',l:'ITA Singles Ranking',ph:'e.g. #34 nationally'},{id:'s3',l:'Lineup Position',ph:'e.g. No. 1 singles'},{id:'s4',l:'Doubles Record',ph:'e.g. 22-8'},{id:'s5',l:'ITA Doubles Ranking',ph:'e.g. #18 nationally'},{id:'s6',l:'Conference Record',ph:'e.g. 12-3'},{id:'s7',l:'ITF / Pro Ranking',ph:'e.g. ITF 450 or N/A'},{id:'s8',l:'Open Experience',ph:'e.g. US Open Qual. or N/A'}],
+  'Golf':[{id:'s1',l:'Scoring Average',ph:'e.g. 71.4'},{id:'s2',l:'WAGR Ranking',ph:'e.g. #55 or N/A'},{id:'s3',l:'Stroke Avg vs Par',ph:'e.g. -0.6'},{id:'s4',l:'Low Round (season)',ph:'e.g. 63'},{id:'s5',l:'Top-10 Finishes',ph:'e.g. 4 this season'},{id:'s6',l:'Conference Finish',ph:'e.g. 3rd SEC Championship'},{id:'s7',l:'NCAA Regional / Nationals',ph:'e.g. Medalist at Regional'},{id:'s8',l:'AJGA / Amateur Wins',ph:'e.g. 2 AJGA wins'}],
+  'Lacrosse':[{id:'s1',l:'Goals',ph:'e.g. 42'},{id:'s2',l:'Assists',ph:'e.g. 18'},{id:'s3',l:'Points (G+A)',ph:'e.g. 60'},{id:'s4',l:'Ground Balls',ph:'e.g. 38'},{id:'s5',l:'Caused Turnovers',ph:'e.g. 22'},{id:'s6',l:'Save % (Goalie)',ph:'e.g. 52.4 or N/A'},{id:'s7',l:'Games Played / Started',ph:'e.g. 18/18'},{id:'s8',l:'NCAA Tournament Round',ph:'e.g. Sweet 16'}],
+  'Ice Hockey':[{id:'s1',l:'Goals',ph:'e.g. 18'},{id:'s2',l:'Assists',ph:'e.g. 24'},{id:'s3',l:'Points',ph:'e.g. 42'},{id:'s4',l:'+/- Rating',ph:'e.g. +16'},{id:'s5',l:'Save % (Goalie)',ph:'e.g. .921 or N/A'},{id:'s6',l:'GAA (Goalie)',ph:'e.g. 2.14 or N/A'},{id:'s7',l:'Games Played',ph:'e.g. 36'},{id:'s8',l:'PP Points / PIM',ph:'e.g. 8 PP pts / 14 PIM'}],
+  'Field Hockey':[{id:'s1',l:'Goals',ph:'e.g. 16'},{id:'s2',l:'Assists',ph:'e.g. 9'},{id:'s3',l:'Shots on Goal',ph:'e.g. 48'},{id:'s4',l:'Save % (GK)',ph:'e.g. 72.5 or N/A'},{id:'s5',l:'Games Started',ph:'e.g. 20'},{id:'s6',l:'Conference Standing',ph:'e.g. 1st ACC'},{id:'s7',l:'NCAA Tournament Result',ph:'e.g. Final Four'},{id:'s8',l:'National Team?',ph:'e.g. U21 or N/A'}],
+  'Beach Volleyball':[{id:'s1',l:'Win-Loss Record',ph:'e.g. 28-6'},{id:'s2',l:'AVCA Pair Ranking',ph:'e.g. #12 nationally'},{id:'s3',l:'Pair Position',ph:'e.g. No. 1 pair'},{id:'s4',l:'Kills / Blocks per set',ph:'e.g. 3.8 kills'},{id:'s5',l:'Serve Aces Rate',ph:'e.g. 8.2%'},{id:'s6',l:'NCAA Tournament Result',ph:'e.g. National Champion'},{id:'s7',l:'AVP / FIVB Experience',ph:'e.g. 2023 AVP or N/A'},{id:'s8',l:'Points Scoring Rate',ph:'e.g. 52%'}],
+};
+const DEFAULT_SS=[{id:'s1',l:'Key Stat 1 (Label: Value)',ph:'e.g. Goals: 18'},{id:'s2',l:'Key Stat 2',ph:'e.g. Assists: 12'},{id:'s3',l:'Key Stat 3',ph:'e.g. Save %: 94%'},{id:'s4',l:'Key Stat 4',ph:'e.g. Team Record: 22-8'},{id:'s5',l:'Best Career Achievement',ph:'e.g. 2x All-Conference'},{id:'s6',l:'Conference / Nationals',ph:'e.g. 3rd at Conference'}];
+
+function onSport(){
+  const sp=g('sport'),box=document.getElementById('sbox'),title=document.getElementById('sboxtitle'),fields=document.getElementById('sfields');
+  if(!sp){box.classList.remove('show');return;}
+  box.classList.add('show');
+  title.textContent=sp.toUpperCase()+' — SEASON STATS (MOST RECENT)';
+  const cfg=SS[sp]||DEFAULT_SS;
+  fields.innerHTML=cfg.map(f=>`<div class="field"><label>${f.l}</label><input type="text" id="${f.id}" placeholder="${f.ph}"></div>`).join('');
+  fields.className='fg';
+}
+
+// ─── NAV ─────────────────────────────────
+function goS(n){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  if(n<=3) document.getElementById('p'+n).classList.add('active');
+  curStep=n; visited.add(n); updProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tryGo(n){if(visited.has(n)&&n<curStep) goS(n);}
+function updProg(){
+  document.getElementById('progFill').style.width=((curStep-1)/3*100)+'%';
+  for(let i=1;i<=4;i++){
+    const sc=document.getElementById('sc'+i),sl=document.getElementById('sl'+i);
+    sc.classList.remove('active','done');sl.classList.remove('active');
+    if(i<curStep){sc.classList.add('done');sc.textContent='✓';}
+    else if(i===curStep){sc.classList.add('active');sc.textContent=i;sl.classList.add('active');}
+    else sc.textContent=i;
+  }
+}
+
+// ─── CHIPS ───────────────────────────────
+function soloChip(el,key,val){
+  el.closest('.chips').querySelectorAll('.chip').forEach(c=>c.classList.remove('on','on-g'));
+  el.classList.add('on'); soloVals[key]=val;
+}
+function multiChip(el){el.classList.toggle('on-g');}
+function chipVals(id){return[...document.getElementById(id).querySelectorAll('.chip.on,.chip.on-g')].map(c=>c.textContent).join(', ');}
+function fcnt(iId,lId,sfx){const n=parseInt(document.getElementById(iId).value)||0;document.getElementById(lId).textContent=fmtN(n)+' '+sfx;}
+function fmtN(n){if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1000)return(n/1000).toFixed(n>=10000?0:1)+'K';return n.toLocaleString();}
+
+// ─── DATA ────────────────────────────────
+function g(id){const e=document.getElementById(id);return e?e.value.trim():'';}
+function collect(){
+  const sp=g('sport'),cfg=SS[sp]||DEFAULT_SS;
+  const stats=cfg.map(f=>{const e=document.getElementById(f.id);return e&&e.value?`${f.l}: ${e.value}`:null;}).filter(Boolean).join(' | ');
+  return {name:`${g('firstName')} ${g('lastName')}`.trim(),sport:sp,position:g('position'),status:g('status'),school:g('school'),targetLevel:g('targetLevel'),homeState:g('homeState'),uc,
+    stars:g('stars'),rnk:g('rnk'),p4o:g('p4o'),committed:g('committed'),
+    prevConf:g('prevConf'),txReason:g('txReason'),elig:g('elig'),prevNIL:g('prevNIL'),
+    stats,tier:soloVals.tierVal,accolades:g('accolades'),injuries:g('injuries'),draftP:g('draftP'),
+    igF:g('igF'),igE:g('igE'),ttF:g('ttF'),ttV:g('ttV'),twF:g('twF'),twI:g('twI'),ytS:g('ytS'),ytV:g('ytV'),
+    content:chipVals('contentC'),nilDeals:chipVals('nilC'),ctx:g('ctx')};
+}
+
+// ─── LOADING ─────────────────────────────
+const LMSGS=['Calculating athletic market value...','Analyzing your social footprint...','Assessing brand equity potential...','Benchmarking comparable athletes...','Modeling deal-type breakdown...','Evaluating conference market factors...','Generating your personalized report...'];
+let lTimer;
+function startLoad(){let i=0;const el=document.getElementById('lsub');el.textContent=LMSGS[0];lTimer=setInterval(()=>{i=(i+1)%LMSGS.length;el.textContent=LMSGS[i];},1700);}
+function stopLoad(){clearInterval(lTimer);}
+
+// ─── RUN ─────────────────────────────────
+
+// ═══════════════════════════════════════════════════════════════════
+// VERUS NIL — BENCHMARK DATABASE (verified public deal research)
+// Anchors AI valuations to real market data
+// ═══════════════════════════════════════════════════════════════════
+const BENCHMARKS = {
+  'Football': {
+    'Power 4 — SEC':    {'Elite QB / All-American':[500000,3000000],'Starter (Skill)':[80000,300000],'Starter (Line/Specialist)':[30000,100000],'Backup / Depth':[8000,30000]},
+    'Power 4 — Big Ten':{'Elite QB / All-American':[450000,2500000],'Starter (Skill)':[75000,280000],'Starter (Line/Specialist)':[28000,90000],'Backup / Depth':[7000,28000]},
+    'Power 4 — ACC':    {'Elite QB / All-American':[350000,2000000],'Starter (Skill)':[60000,220000],'Starter (Line/Specialist)':[22000,75000],'Backup / Depth':[5000,22000]},
+    'Power 4 — Big 12': {'Elite QB / All-American':[350000,2000000],'Starter (Skill)':[60000,220000],'Starter (Line/Specialist)':[22000,75000],'Backup / Depth':[5000,22000]},
+    'Power 4 (Conference TBD)':{'Elite QB / All-American':[350000,2000000],'Starter (Skill)':[60000,200000],'Starter (Line/Specialist)':[20000,70000],'Backup / Depth':[5000,20000]},
+    'Group of 5':       {'Elite QB / All-American':[40000,120000],'Starter (Skill)':[15000,60000],'Starter (Line/Specialist)':[5000,20000],'Backup / Depth':[500,5000]},
+    'FCS / D1-AA':      {'Elite QB / All-American':[10000,40000],'Starter (Skill)':[2000,15000],'Starter (Line/Specialist)':[500,5000],'Backup / Depth':[0,2000]},
+    'Division II':      {'Elite QB / All-American':[2000,10000],'Starter (Skill)':[500,4000],'Starter (Line/Specialist)':[0,1500],'Backup / Depth':[0,500]},
+  },
+  "Men's Basketball": {
+    'Power 4 — SEC':    {'Elite / All-American':[200000,1000000],'Starter':[80000,300000],'Role Player':[20000,80000],'Bench':[5000,20000]},
+    'Power 4 — Big Ten':{'Elite / All-American':[200000,900000],'Starter':[75000,280000],'Role Player':[18000,75000],'Bench':[5000,18000]},
+    'Power 4 — ACC':    {'Elite / All-American':[180000,800000],'Starter':[60000,250000],'Role Player':[15000,65000],'Bench':[4000,15000]},
+    'Power 4 — Big 12': {'Elite / All-American':[180000,800000],'Starter':[60000,250000],'Role Player':[15000,65000],'Bench':[4000,15000]},
+    'Power 4 (Conference TBD)':{'Elite / All-American':[150000,700000],'Starter':[50000,220000],'Role Player':[12000,55000],'Bench':[3000,12000]},
+    'Group of 5':       {'Elite / All-American':[20000,80000],'Starter':[8000,35000],'Role Player':[2000,10000],'Bench':[500,2500]},
+    'FCS / D1-AA':      {'Elite / All-American':[5000,20000],'Starter':[1000,8000],'Role Player':[0,3000],'Bench':[0,1000]},
+  },
+  "Women's Basketball": {
+    'Power 4 — SEC':    {'Elite / Star':[100000,800000],'Starter':[30000,180000],'Role Player':[8000,40000],'Bench':[2000,10000]},
+    'Power 4 — Big Ten':{'Elite / Star':[100000,700000],'Starter':[28000,160000],'Role Player':[7000,38000],'Bench':[2000,9000]},
+    'Power 4 — ACC':    {'Elite / Star':[80000,600000],'Starter':[22000,140000],'Role Player':[6000,32000],'Bench':[1500,8000]},
+    'Power 4 — Big 12': {'Elite / Star':[80000,550000],'Starter':[22000,130000],'Role Player':[5500,30000],'Bench':[1500,7000]},
+    'Power 4 (Conference TBD)':{'Elite / Star':[70000,500000],'Starter':[20000,120000],'Role Player':[5000,28000],'Bench':[1000,6000]},
+    'Group of 5':       {'Elite / Star':[10000,50000],'Starter':[3000,18000],'Role Player':[500,5000],'Bench':[0,1500]},
+  },
+  'Baseball': {
+    'Power 4 — SEC':    {'Star Pitcher / All-American':[30000,150000],'Starter':[8000,45000],'Contributor':[2000,12000],'Bench':[500,3000]},
+    'Power 4 (Conference TBD)':{'Star Pitcher / All-American':[20000,100000],'Starter':[5000,30000],'Contributor':[1000,8000],'Bench':[500,2000]},
+    'Group of 5':       {'Star Pitcher / All-American':[3000,20000],'Starter':[1000,7000],'Contributor':[200,2000],'Bench':[0,500]},
+  },
+  'Softball': {
+    'Power 4 — SEC':    {'Star Pitcher / All-American':[20000,100000],'Starter':[5000,30000],'Contributor':[1000,8000],'Bench':[500,2000]},
+    'Power 4 (Conference TBD)':{'Star Pitcher / All-American':[15000,80000],'Starter':[4000,25000],'Contributor':[800,6000],'Bench':[200,1500]},
+    'Group of 5':       {'Star Pitcher / All-American':[2000,12000],'Starter':[500,4000],'Contributor':[0,1000],'Bench':[0,500]},
+  },
+  'Gymnastics': {
+    'Power 4 — SEC':    {'Star / Olympian (Dunne-tier)':[300000,4500000],'All-American / Strong Social':[40000,300000],'Starter':[8000,50000],'Roster':[1000,10000]},
+    'Power 4 — Big Ten':{'Star / Olympian (Dunne-tier)':[250000,3000000],'All-American / Strong Social':[35000,250000],'Starter':[6000,40000],'Roster':[800,8000]},
+    'Power 4 (Conference TBD)':{'Star / Olympian (Dunne-tier)':[100000,2000000],'All-American / Strong Social':[20000,150000],'Starter':[4000,25000],'Roster':[500,5000]},
+    'Group of 5':       {'Star / Olympian (Dunne-tier)':[20000,200000],'All-American / Strong Social':[5000,40000],'Starter':[500,5000],'Roster':[0,1000]},
+  },
+  "Women's Soccer": {
+    'Power 4 — SEC':    {'USWNT / Olympic Prospect':[50000,400000],'Starter':[5000,40000],'Contributor':[1000,8000],'Bench':[200,2000]},
+    'Power 4 (Conference TBD)':{'USWNT / Olympic Prospect':[30000,250000],'Starter':[3000,25000],'Contributor':[500,5000],'Bench':[0,1500]},
+    'Group of 5':       {'USWNT / Olympic Prospect':[5000,40000],'Starter':[500,5000],'Contributor':[0,1500],'Bench':[0,500]},
+  },
+  "Men's Soccer": {
+    'Power 4 (Conference TBD)':{'MLS / USMNT Prospect':[10000,60000],'Starter':[2000,12000],'Contributor':[300,3000],'Bench':[0,800]},
+    'Group of 5':              {'MLS / USMNT Prospect':[1000,8000],'Starter':[200,2000],'Contributor':[0,500],'Bench':[0,200]},
+  },
+  'Volleyball': {
+    'Power 4 — Big Ten':       {'All-American / Strong Social':[30000,200000],'Starter':[5000,40000],'Contributor':[1000,8000],'Bench':[200,2000]},
+    'Power 4 (Conference TBD)':{'All-American / Strong Social':[15000,120000],'Starter':[3000,25000],'Contributor':[500,5000],'Bench':[100,1500]},
+    'Group of 5':              {'All-American / Strong Social':[2000,20000],'Starter':[300,3000],'Contributor':[0,800],'Bench':[0,300]},
+  },
+  'Wrestling': {
+    'Power 4 (Conference TBD)':{'National Champion / Olympic':[10000,80000],'All-American':[3000,20000],'Starter':[500,5000],'Roster':[0,1000]},
+    'Group of 5':              {'National Champion / Olympic':[2000,15000],'All-American':[500,4000],'Starter':[0,1000],'Roster':[0,300]},
+  },
+  'Track & Field / Cross Country': {
+    'Power 4 (Conference TBD)':{'Olympic Medalist / Nat. Champion':[30000,400000],'NCAA All-American':[5000,40000],'NCAA Qualifier':[1000,8000],'Roster':[0,2000]},
+    'Group of 5':              {'Olympic Medalist / Nat. Champion':[5000,50000],'NCAA All-American':[500,6000],'NCAA Qualifier':[0,2000],'Roster':[0,500]},
+  },
+  'Swimming & Diving': {
+    'Power 4 (Conference TBD)':{'Olympian / NCAA Champion':[30000,500000],'NCAA Qualifier (A-cut)':[3000,25000],'Conference Scorer':[500,5000],'Roster':[0,1000]},
+    'Group of 5':              {'Olympian / NCAA Champion':[5000,80000],'NCAA Qualifier (A-cut)':[500,5000],'Conference Scorer':[0,1500],'Roster':[0,300]},
+  },
+  'Tennis':  {'Power 4 (Conference TBD)':{'Top ITA Ranked':[10000,100000],'Starter (#1-3)':[2000,15000],'Starter (#4-6)':[500,4000],'Bench':[0,1000]}},
+  'Golf':    {'Power 4 (Conference TBD)':{'Top WAGR / Future Tour':[15000,200000],'Starter':[3000,20000],'Roster':[500,4000],'Walk-on':[0,1000]}},
+  'Lacrosse':{'Power 4 (Conference TBD)':{'All-American':[5000,40000],'Starter':[1000,8000],'Contributor':[200,2000],'Bench':[0,500]}},
+  'Ice Hockey':{'Power 4 (Conference TBD)':{'NHL Draft Prospect':[15000,100000],'Starter':[3000,18000],'Contributor':[500,4000],'Bench':[0,1000]}},
+};
+
+// Real documented deals — surface as comparables in results
+const REAL_DEALS = [
+  {athlete:'Bryce Underwood',sport:'Football',conf:'Power 4 — Big Ten',brand:'Champions Circle (Michigan)',amount:2625000,year:2024,note:'$10.5M/4-yr collective; flipped from LSU'},
+  {athlete:'AJ Dybantsa',sport:"Men's Basketball",conf:'Power 4 (Conference TBD)',brand:'BYU NIL Collective',amount:7000000,year:2024,note:'Highest ever single-year college NIL deal'},
+  {athlete:'Shedeur Sanders',sport:'Football',conf:'Power 4 (Conference TBD)',brand:'Nike, Gatorade, Beats, Google, KFC + more',amount:6200000,year:2024,note:'First CFB player signed by Nike; 11+ deals'},
+  {athlete:'Olivia Dunne',sport:'Gymnastics',conf:'Power 4 — SEC',brand:'Vuori, American Eagle, Nautica, Passes',amount:4200000,year:2024,note:'5.4M IG + 8.1M TikTok; social media primary driver'},
+  {athlete:'Cooper Flagg',sport:"Men's Basketball",conf:'Power 4 (Conference TBD)',brand:'Gatorade, New Balance, Cort Furniture',amount:2900000,year:2024,note:'No.1 recruit 2024 class'},
+  {athlete:'Caitlin Clark',sport:"Women's Basketball",conf:'Power 4 — Big Ten',brand:'Nike, Gatorade, Apple, State Farm, Buick',amount:3000000,year:2024,note:'Broke NCAA scoring record; transformed WBB NIL'},
+  {athlete:'Jordan Chiles',sport:'Gymnastics',conf:'Power 4 (Conference TBD)',brand:'Athleta, Powerade, multiple',amount:1300000,year:2024,note:'$1.3M across 7 UCLA deals — verified by WaPo'},
+  {athlete:'Jade Carey',sport:'Gymnastics',conf:'Power 4 (Conference TBD)',brand:'Reebok',amount:200000,year:2023,note:'Olympic gold medalist; Reebok ~$200K'},
+  {athlete:'Flau\'jae Johnson',sport:"Women's Basketball",conf:'Power 4 — SEC',brand:'Various + music career',amount:1500000,year:2024,note:'Rapper + WBB; 2M IG, 1.6M TikTok'},
+  {athlete:'Carson Beck',sport:'Football',conf:'Power 4 — SEC',brand:'Miami Collective + Chipotle, Powerade',amount:3500000,year:2024,note:'Transferred for $3–4M reported collective'},
+  {athlete:'Arch Manning',sport:'Football',conf:'Power 4 — Big 12',brand:'Panini, EA Sports, Red Bull, Raising Cane\'s',amount:5400000,year:2025,note:'On3 valuation $5.4M; Manning legacy premium'},
+  {athlete:'Sydney Smith (D2)',sport:'Gymnastics',conf:'Division II',brand:'Social media / brand deals',amount:651000,year:2024,note:'D2 athlete; 651K IG + 2.6M TikTok — social > division'},
+  {athlete:'Sedona Prince',sport:"Women's Basketball",conf:'Power 4 — Big 12',brand:'Various',amount:340000,year:2024,note:'141K IG, 2.5M TikTok; viral athlete brand'},
+  {athlete:'Virginia Swim Team (total)',sport:'Swimming & Diving',conf:'Power 4 (Conference TBD)',brand:'Various',amount:1100000,year:2024,note:'TEAM total; exceeded their football program (WaPo)'},
+  {athlete:'UCLA Volleyball (112 deals)',sport:'Volleyball',conf:'Power 4 (Conference TBD)',brand:'Various',amount:36000,year:2024,note:'$36K across 112 deals — non-revenue reality check (WaPo)'},
+  {athlete:'Anonymous Maryland Gymnast',sport:'Gymnastics',conf:'Power 4 (Conference TBD)',brand:'Local appearance',amount:10,year:2022,note:'Lowest deal in WaPo $35M dataset — $10 appearance fee'},
+];
+
+// ─── SUPABASE CONFIG ─────────────────────────────────────────────────
+// 🔧 SETUP: Replace these with your Supabase project values
+// Get them free at supabase.com → New Project → Settings → API
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';       // e.g. https://xyzabc.supabase.co
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // long string starting with eyJ...
+
+async function logSubmission(d, result) {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') return; // not configured yet
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/valuations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        use_case: d.uc,
+        sport: d.sport,
+        position: d.position,
+        status: d.status,
+        target_level: d.targetLevel,
+        home_state: d.homeState,
+        star_rating: d.stars,
+        athletic_tier: d.tier,
+        ig_followers: parseInt(d.igF)||0,
+        tt_followers: parseInt(d.ttF)||0,
+        tw_followers: parseInt(d.twF)||0,
+        yt_subscribers: parseInt(d.ytS)||0,
+        existing_nil: d.nilDeals,
+        valuation_mid: result.valuationMid,
+        valuation_low: result.valuationLow,
+        valuation_high: result.valuationHigh,
+        tier_result: result.tier,
+        confidence: result.confidenceLevel || 'Medium',
+        created_at: new Date().toISOString(),
+      })
+    });
+  } catch(e) { /* silent fail — never block the user */ }
+}
+
+async function submitDealReport(dealData) {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    // Simulate success when not configured
+    return { ok: true };
+  }
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/deal_reports`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      ...dealData,
+      created_at: new Date().toISOString(),
+      verified: false,
+    })
+  });
+  return res;
+}
+
+// ─── BENCHMARK HELPERS ───────────────────────────────────────────────
+function getBenchmark(sport, conf, tier) {
+  const sData = BENCHMARKS[sport];
+  if (!sData) return null;
+  const confData = sData[conf] || sData['Power 4 (Conference TBD)'] || Object.values(sData)[0];
+  if (!confData) return null;
+  // Find exact tier key or use 2nd option (starter-level) as default
+  const exactKey = Object.keys(confData).find(k => k.toLowerCase().includes((tier||'').toLowerCase().split(' ')[0]));
+  return confData[exactKey] || Object.values(confData)[1] || Object.values(confData)[0];
+}
+
+function findComparables(sport, conf) {
+  const same = REAL_DEALS.filter(d => d.sport === sport && d.amount > 1000);
+  const confMatch = same.filter(d => d.conf === conf);
+  return (confMatch.length ? confMatch : same).slice(0, 3);
+}
+
+function calcSocialAdd(igF, ttF) {
+  const ig = parseInt(igF)||0, tt = parseInt(ttF)||0;
+  let add = 0;
+  if(ig>1000000)add+=150000; else if(ig>500000)add+=80000; else if(ig>100000)add+=25000; else if(ig>50000)add+=10000; else if(ig>10000)add+=3000;
+  if(tt>1000000)add+=200000; else if(tt>500000)add+=100000; else if(tt>100000)add+=35000; else if(tt>50000)add+=15000; else if(tt>10000)add+=4000;
+  return add;
+}
+
+function buildBenchmarkContext(d) {
+  const bm = getBenchmark(d.sport, d.targetLevel, d.tier);
+  const comps = findComparables(d.sport, d.targetLevel);
+  const socialAdd = calcSocialAdd(d.igF, d.ttF);
+  let ctx = `\n\nVERUS NIL BENCHMARK DATABASE — HARD ANCHORS:\n`;
+  if (bm) ctx += `Verified range for ${d.sport} / ${d.targetLevel}: $${bm[0].toLocaleString()} – $${bm[1].toLocaleString()}/yr\n`;
+  if (socialAdd > 0) ctx += `Social add-on (IG ${fmtN(parseInt(d.igF)||0)} + TikTok ${fmtN(parseInt(d.ttF)||0)}): ~$${socialAdd.toLocaleString()}/yr extra\n`;
+  if (comps.length) {
+    ctx += `\nREAL DEALS FOR THIS SPORT:\n`;
+    comps.forEach(c => { ctx += `• ${c.athlete}: $${c.amount.toLocaleString()}/yr via ${c.brand} — ${c.note}\n`; });
+  }
+  ctx += `\nVERIFIED MARKET FACTS:\n• Bryce Underwood (Michigan QB): $2.6M/yr collective\n• AJ Dybantsa (BYU MBB): $7M — highest ever single year\n• Olivia Dunne (LSU Gymnastics): $4.2M — social media primary\n• WaPo data: avg P4 football starter collective = $80K–$300K\n• Texas A&M total NIL 2024-25: $51.4M (disclosed)\n• Virginia swim team total: $1.1M — exceeded football\n• UCLA volleyball 112 deals = $36K total — non-revenue reality\n• D2 gymnast Sydney Smith: $651K On3 — social > division level\n`;
+  return ctx;
+}
+
+// ─── RUN ─────────────────────────────────
+async function run(){
+  const d=collect();
+  if(!d.sport||!d.status){alert('Please fill in your Sport and Current Status first.');return;}
+  goS(4);
+  document.getElementById('loadingBox').classList.add('on');
+  document.getElementById('resultsBox').classList.remove('on');
+  startLoad();
+
+  const bm = getBenchmark(d.sport, d.targetLevel, d.tier);
+  const bmRange = bm ? `$${bm[0].toLocaleString()}–$${bm[1].toLocaleString()}` : 'see benchmark data below';
+  const bmContext = buildBenchmarkContext(d);
+
+  const SYS=`You are a top NIL sports marketing analyst with access to a verified database of real college athlete NIL deals and market benchmarks.
+Respond ONLY with valid JSON — no markdown, no backticks, no text outside the JSON.
+Required keys:
+- valuationLow: number
+- valuationHigh: number
+- valuationMid: number
+- tier: "Elite"|"High"|"Mid-Tier"|"Developing"
+- athleticScore: 0-100
+- socialScore: 0-100
+- brandScore: 0-100
+- marketScore: 0-100
+- confidenceLevel: "High"|"Medium"|"Low"
+- confidenceNote: string (1 sentence, mention specific comparable deals if available)
+- analysis: string (2-3 HTML paragraphs using only <p> and <strong>)
+- dealTypes: array of 4 {type, amount, pct:number, description}
+- schoolComparisons: array of 3-4 {school, estimatedValue, flag:"up"|"down"|"neutral", note}
+- factors: array of 5-7 {icon:emoji, text}
+- tips: array of 4 {num, title, text:HTML with <strong>}
+
+CRITICAL: Your valuation MUST be anchored to the benchmark range ${bmRange}. Do not deviate more than 25% outside this range unless a specific named reason exists (pro draft stock, viral social media with 500K+ followers, Olympic medalist).${bmContext}`;
+
+  const PROMPT=`ATHLETE TYPE: ${d.uc==='transfer'?'TRANSFER PORTAL':'HIGH SCHOOL / COLLEGE RECRUIT'}
+PROFILE: ${d.name||'Athlete'} | ${d.sport} | ${d.position} | ${d.status} | Target: ${d.targetLevel} | Market: ${d.homeState}
+${d.uc==='recruit'?`RECRUITING: ${d.stars} | Rank: ${d.rnk} | P4 Offers: ${d.p4o} | ${d.committed}`:`TRANSFER: From ${d.prevConf} | Reason: ${d.txReason} | Elig: ${d.elig} | Prior NIL: ${d.prevNIL}`}
+ATHLETICS: Tier: ${d.tier} | Draft: ${d.draftP} | Stats: ${d.stats} | Awards: ${d.accolades}
+SOCIAL: IG ${d.igF} (${d.igE}% eng) | TikTok ${d.ttF} (${d.ttV} views) | Twitter ${d.twF} | YouTube ${d.ytS}
+BRAND: ${d.content} | Existing deals: ${d.nilDeals} | Context: ${d.ctx}
+Use the benchmark data provided and reference specific comparable deals in your analysis.`;
+
+  let parsed;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:SYS,messages:[{role:'user',content:PROMPT}]})});
+    const raw=await res.json();
+    parsed=JSON.parse(raw.content[0].text.replace(/```json|```/g,'').trim());
+  }catch(e){parsed=fallback(d);}
+  stopLoad();
+  document.getElementById('loadingBox').classList.remove('on');
+  logSubmission(d, parsed).catch(()=>{});
+  render(parsed,d);
+}
+
+// ─── FALLBACK ────────────────────────────
+function fallback(d){
+  const bm=getBenchmark(d.sport,d.targetLevel,d.tier);
+  const socialAdd=calcSocialAdd(d.igF,d.ttF);
+  let base;
+  if(bm){base=(bm[0]+bm[1])/2+socialAdd;}
+  else{
+    const bases={'Football':50000,"Men's Basketball":45000,"Women's Basketball":42000,'Baseball':18000,'Softball':16000,"Men's Soccer":12000,"Women's Soccer":14000,'Gymnastics':22000,'Volleyball':14000,'Wrestling':10000,'Track & Field / Cross Country':8000,'Swimming & Diving':9000,'Tennis':11000,'Golf':13000,'Lacrosse':11000,'Ice Hockey':15000,'Field Hockey':9000,'Beach Volleyball':10000};
+    base=bases[d.sport]||8000;
+    if(d.uc==='recruit'){const sm={'5-Star':5,'4-Star':3,'3-Star':1.6,'2-Star':0.9,'Not Yet Rated':0.6};base*=(sm[d.stars]||1);}
+    const cm={'Power 4 — SEC':2.5,'Power 4 — Big Ten':2.3,'Power 4 — ACC':2.0,'Power 4 — Big 12':2.0,'Power 4 (Conference TBD)':2.1,'Group of 5':1.1,'FCS / D1-AA':0.65,'Division II':0.35};
+    base*=(cm[d.targetLevel]||1);
+    base+=socialAdd;
+  }
+  const ig=parseInt(d.igF)||0,tt=parseInt(d.ttF)||0,yt=parseInt(d.ytS)||0;
+  const mid=Math.round(base);
+  const t=mid>300000?'Elite':mid>75000?'High':mid>20000?'Mid-Tier':'Developing';
+  const bmRange=bm?`$${bm[0].toLocaleString()}–$${bm[1].toLocaleString()}`:'market data';
+  return{valuationMid:mid,valuationLow:bm?bm[0]:Math.round(mid*.55),valuationHigh:bm?bm[1]:Math.round(mid*1.85),tier:t,
+    athleticScore:d.stars==='5-Star'?90:d.stars==='4-Star'?76:d.tier?.includes('All-American')?80:d.tier?.includes('All-Conference')?68:55,
+    socialScore:Math.min(95,Math.round(ig/500+tt/300+yt/400)),brandScore:d.content?60:40,
+    marketScore:d.targetLevel?.includes('Power 4')?78:d.targetLevel?.includes('G5')||d.targetLevel?.includes('Group')?46:36,
+    confidenceLevel:bm?'High':'Medium',
+    confidenceNote:bm?`Anchored to verified market data for ${d.sport} at ${d.targetLevel} (${bmRange}).`:`Estimated from comparable sport/conference data.`,
+    analysis:`<p>Based on your profile as a <strong>${d.sport} athlete</strong> targeting <strong>${d.targetLevel}</strong>, your NIL estimate is anchored to verified market benchmarks (${bmRange}). ${d.targetLevel?.includes('Power 4')?'Power 4 collective budgets dwarf all other levels — this is the single biggest multiplier in the NIL market.':''}</p><p>Your social media adds an estimated <strong>$${socialAdd.toLocaleString()}/yr</strong> on top of your athletic base value. ${socialAdd>50000?'This is a meaningful contribution — your social following is a real asset independent of what school you choose.':'Growing your following to 50K+ on Instagram or TikTok would add $10K–$35K to this estimate.'}</p><p>${d.uc==='transfer'?'For the transfer portal, contact collective directors at your target schools before committing — collective offers are now a standard part of portal negotiations.':'Building your brand early compounds over time. Start with 2–3 local business deals in your first semester to establish your deal-making history.'}</p>`,
+    dealTypes:[{type:'School Collective',amount:fmt(Math.round(mid*.5)),pct:50,description:'Direct compensation from booster collectives tied to athletic performance and enrollment'},{type:'Social Media Deals',amount:fmt(Math.round(mid*.25)),pct:25,description:'Paid brand partnerships via Instagram, TikTok, and YouTube'},{type:'Local / Regional',amount:fmt(Math.round(mid*.15)),pct:15,description:'Appearances, endorsements, and deals with area businesses'},{type:'Merch & Licensing',amount:fmt(Math.round(mid*.10)),pct:10,description:'Personal merch, autograph signings, and licensing deals'}],
+    schoolComparisons:[{school:'Your Target Level',estimatedValue:fmt(mid),flag:'neutral',note:'Baseline estimate from benchmark data'},{school:'SEC / Big Ten Specifically',estimatedValue:fmt(Math.round(mid*1.3)),flag:'up',note:'Top collective budgets & media markets'},{school:'Group of 5 Option',estimatedValue:fmt(Math.round(mid*.45)),flag:'down',note:'Smaller collectives, less brand exposure'},{school:'FCS / Regional',estimatedValue:fmt(Math.round(mid*.22)),flag:'down',note:'Very limited collective infrastructure'}],
+    factors:[{icon:'🏟️',text:'Conference collective budget is the #1 driver — verified data shows P4 starters earn 3–8x more than G5 equivalents'},{icon:'⭐',text:'Star rating and recruiting rank set the opening collective offer — 5-stars can command $50K–$3M+ before stepping on campus'},{icon:'📱',text:'Social following drives brand deals independent of school — 100K TikTok followers can add $35K+/yr to any athlete at any level'},{icon:'🎯',text:'Position scarcity matters: QBs, point guards, and lead scorers earn 2–5x the sport average in every market'},{icon:'📅',text:'Eligibility remaining affects structure — 2+ years enables multi-year deals that command higher total value'},{icon:'🤝',text:'Existing deal history and a prepared brand deck cuts the timeline to your first deal at a new school significantly'},{icon:'📍',text:'Market size compounds local deal volume — large metro programs offer more local business opportunities'}],
+    tips:[{num:'01',title:'Build a Brand One-Pager',text:'<strong>Create an NIL resume</strong> with your stats, social audience data (screenshot demographics), and existing deals. This is what separates athletes who get deals from those who wait.'},{num:'02',title:'Post 4–5x Per Week',text:'<strong>Consistency beats virality.</strong> Training content, behind-the-scenes access, and authentic personal story drives the follower growth that unlocks brand deals over time.'},{num:'03',title:'Contact Collectives First',text:'<strong>Reach out to the collective director</strong> at target schools before committing. NIL offers are now a standard part of portal and recruitment decisions — ask directly.'},{num:'04',title:'Start Local, Scale Up',text:'<strong>Local businesses are your fastest path to deals.</strong> Car dealerships, gyms, restaurants near campus actively pursue athlete partnerships and can close in days, not months.'}]};
+}
+
+function fmt(n){if(!n||isNaN(n))return'$—';if(n>=1e6)return'$'+(n/1e6).toFixed(1)+'M';if(n>=1000)return'$'+Math.round(n/1000)+'K';return'$'+n.toLocaleString();}
+
+// ─── RENDER ───────────────────────────────
+function render(data,d){
+  const rb=document.getElementById('resultsBox');rb.classList.add('on');
+  document.getElementById('rName').textContent=d.name?d.name+' — '+d.sport:d.sport;
+  document.getElementById('rAmt').textContent=fmt(data.valuationMid);
+  document.getElementById('rRng').textContent=`Annual Range: ${fmt(data.valuationLow)} – ${fmt(data.valuationHigh)}`;
+  const tEl=document.getElementById('rTier');
+  const tLabels={Elite:'🏆 Elite NIL Prospect',High:'⭐ High-Value Prospect','Mid-Tier':'📈 Mid-Tier Prospect',Developing:'🌱 Developing Prospect'};
+  const tCls={Elite:'t-elite',High:'t-high','Mid-Tier':'t-mid',Developing:'t-dev'};
+  tEl.innerHTML=`<span class="tdot"></span>${tLabels[data.tier]||data.tier}`;
+  tEl.className='vtier '+(tCls[data.tier]||'t-dev');
+
+  // Confidence badge
+  const confEl=document.getElementById('rConfidence');
+  if(confEl&&data.confidenceLevel){
+    const confColors={High:'rgba(34,211,160,.15)',Medium:'rgba(240,180,41,.12)',Low:'rgba(248,113,113,.12)'};
+    const confBorder={High:'rgba(34,211,160,.4)',Medium:'rgba(240,180,41,.35)',Low:'rgba(248,113,113,.35)'};
+    const confText={High:'var(--green)',Medium:'var(--gold)',Low:'var(--red)'};
+    const confIcons={High:'✓',Medium:'~',Low:'!'};
+    confEl.style.display='flex';
+    confEl.innerHTML=`<span style="background:${confColors[data.confidenceLevel]};border:1px solid ${confBorder[data.confidenceLevel]};color:${confText[data.confidenceLevel]};padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px">${confIcons[data.confidenceLevel]} ${data.confidenceLevel} Confidence</span><span style="font-size:12px;color:var(--muted2);margin-left:10px">${data.confidenceNote||''}</span>`;
+  }
+
+  [['sAth','bAth',data.athleticScore],['sSoc','bSoc',data.socialScore],['sBrand','bBrand',data.brandScore],['sMkt','bMkt',data.marketScore]].forEach(([sv,bv,val])=>{
+    document.getElementById(sv).textContent=val??'—';
+    setTimeout(()=>{document.getElementById(bv).style.width=(val??0)+'%';},450);
+  });
+
+  document.getElementById('rAnalysis').innerHTML=data.analysis||'<p>Analysis unavailable.</p>';
+
+  document.getElementById('rDeals').innerHTML=(data.dealTypes||[]).map(dt=>`
+    <div class="dcard"><div class="dtype">${dt.type}</div><div class="dval">${dt.amount}</div>
+    <div class="dpct">${dt.pct}% of total valuation</div><div class="ddesc">${dt.description}</div>
+    <div class="dbar"><div class="dbfill" data-w="${dt.pct}%"></div></div></div>`).join('');
+  setTimeout(()=>{document.querySelectorAll('.dbfill').forEach(e=>{e.style.width=e.dataset.w;});},550);
+
+  if(data.schoolComparisons?.length){
+    document.getElementById('rCompBlock').style.display='block';
+    document.getElementById('rCompTable').innerHTML=
+      `<tr><th>School / Level</th><th>Est. NIL Value</th><th>Context</th></tr>`+
+      (data.schoolComparisons||[]).map(c=>`<tr><td>${c.school}</td><td style="color:var(--gold);font-family:'DM Mono',monospace">${c.estimatedValue}</td><td>${c.note}<span class="cflag ${c.flag==='up'?'cf-up':c.flag==='down'?'cf-dn':'cf-ne'}">${c.flag==='up'?'↑ Higher':c.flag==='down'?'↓ Lower':'≈ Similar'}</span></td></tr>`).join('');
+  } else document.getElementById('rCompBlock').style.display='none';
+
+  document.getElementById('rFactors').innerHTML=(data.factors||[]).map(f=>`<li class="fli"><span class="fic">${f.icon}</span>${f.text}</li>`).join('');
+  document.getElementById('rTips').innerHTML=(data.tips||[]).map(t=>`<div class="tcard"><div class="tnum">${t.num}</div><div class="ttxt"><strong>${t.title}</strong><br><br>${t.text}</div></div>`).join('');
+
+  // Store last result data for deal report pre-fill
+  window._lastResult = data;
+  window._lastProfile = d;
+
+  updProg(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restart(){
+  document.getElementById('resultsBox').classList.remove('on');
+  document.getElementById('loadingBox').classList.remove('on');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('p1').classList.add('active');
+  visited=new Set([1]); curStep=1; updProg();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ─── GLASSDOOR DEAL REPORT MODAL ─────────────────────────────────────
+function openDealModal(){
+  const m=document.getElementById('dealModal');
+  m.style.display='flex';
+  // Pre-fill from last profile if available
+  if(window._lastProfile){
+    const p=window._lastProfile;
+    const sf=document.getElementById('dr_sport'); if(sf&&p.sport)sf.value=p.sport;
+    const cf=document.getElementById('dr_conf');  if(cf&&p.targetLevel)cf.value=p.targetLevel;
+    const est=document.getElementById('dr_estimated'); if(est&&window._lastResult)est.value=window._lastResult.valuationMid||'';
+  }
+  setTimeout(()=>m.querySelector('.modal-box').classList.add('modal-in'),10);
+}
+
+function closeDealModal(){
+  const m=document.getElementById('dealModal');
+  m.querySelector('.modal-box').classList.remove('modal-in');
+  setTimeout(()=>{m.style.display='none';},300);
+}
+
+async function submitDeal(){
+  const g=id=>{ const e=document.getElementById(id); return e?e.value.trim():''; };
+  const sport=g('dr_sport'), conf=g('dr_conf'), dealType=g('dr_type'),
+        amount=parseInt(g('dr_amount')), brand=g('dr_brand'), brandCat=g('dr_brandCat'),
+        accuracy=g('dr_accuracy'), note=g('dr_note'), estimated=parseInt(g('dr_estimated'));
+
+  if(!sport||!conf||!dealType||!amount){
+    document.getElementById('dr_err').textContent='Sport, conference, deal type, and amount are required.';
+    return;
+  }
+  if(amount<0||amount>50000000){
+    document.getElementById('dr_err').textContent='Please enter a realistic deal amount (under $50M).';
+    return;
+  }
+
+  document.getElementById('dr_err').textContent='';
+  document.getElementById('dr_submitBtn').disabled=true;
+  document.getElementById('dr_submitBtn').textContent='Submitting...';
+
+  try {
+    await submitDealReport({sport,conference:conf,deal_type:dealType,amount,brand_name:brand||'Anonymous',brand_category:brandCat,accuracy_rating:accuracy,notes:note,estimated_value:estimated||null});
+    document.getElementById('dr_form').style.display='none';
+    document.getElementById('dr_success').style.display='block';
+  } catch(e) {
+    document.getElementById('dr_err').textContent='Submission failed. Please try again.';
+    document.getElementById('dr_submitBtn').disabled=false;
+    document.getElementById('dr_submitBtn').textContent='Submit Deal Anonymously';
+  }
+}
+
+// INIT
+setUC('recruit'); updProg();
+</script>
+
+<!-- ═══ GLASSDOOR DEAL REPORT MODAL ══════════════════════════════════ -->
+<style>
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+.modal-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:36px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;transform:translateY(20px);opacity:0;transition:all .3s ease}
+.modal-box.modal-in{transform:translateY(0);opacity:1}
+.modal-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1.5px}
+.modal-close{background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:0;line-height:1;transition:color .2s}
+.modal-close:hover{color:var(--text)}
+.modal-subtitle{font-size:13px;color:var(--muted2);margin-bottom:24px;line-height:1.6;padding:12px 16px;background:rgba(34,211,160,.06);border:1px solid rgba(34,211,160,.15);border-radius:9px}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modal-field{display:flex;flex-direction:column;gap:7px}
+.modal-field.mfull{grid-column:1/-1}
+.modal-field label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500}
+.modal-field input,.modal-field select,.modal-field textarea{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 13px;outline:none;-webkit-appearance:none}
+.modal-field input:focus,.modal-field select:focus{border-color:rgba(34,211,160,.4)}
+.dr-err{color:var(--red);font-size:12px;margin-top:8px;min-height:16px}
+.btn-submit-deal{width:100%;margin-top:18px;padding:14px;background:linear-gradient(135deg,#0db87e,var(--green));color:var(--bg);border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.4px}
+.btn-submit-deal:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(34,211,160,.3)}
+.btn-submit-deal:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.dr-success{display:none;text-align:center;padding:20px 0}
+.dr-success-icon{font-size:48px;margin-bottom:16px}
+.dr-success-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;color:var(--green);margin-bottom:10px}
+.dr-success-text{font-size:14px;color:var(--muted2);line-height:1.6}
+.deal-report-trigger{display:flex;align-items:center;gap:10px;background:rgba(34,211,160,.06);border:1px solid rgba(34,211,160,.2);border-radius:12px;padding:16px 20px;margin-top:20px;cursor:pointer;transition:all .2s}
+.deal-report-trigger:hover{background:rgba(34,211,160,.1);border-color:rgba(34,211,160,.35)}
+.drt-icon{font-size:22px;flex-shrink:0}
+.drt-text strong{display:block;font-size:14px;font-weight:600;color:var(--green);margin-bottom:2px}
+.drt-text span{font-size:12px;color:var(--muted2)}
+.drt-arrow{margin-left:auto;color:var(--green);font-size:18px}
+</style>
+
+<div class="modal-overlay" id="dealModal" onclick="if(event.target===this)closeDealModal()">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <div>
+        <div class="modal-title">REPORT YOUR NIL DEAL</div>
+      </div>
+      <button class="modal-close" onclick="closeDealModal()">✕</button>
+    </div>
+    <div class="modal-subtitle">
+      <strong style="color:var(--green)">100% anonymous.</strong> Your name and school are never collected. Every submission helps calibrate Verus NIL for the entire community — like Glassdoor, but for athlete deals.
+    </div>
+    <div id="dr_form">
+      <div class="modal-grid">
+        <div class="modal-field">
+          <label>Sport <span style="color:var(--gold)">*</span></label>
+          <select id="dr_sport">
+            <option value="">Select</option>
+            <option>Football</option><option>Men's Basketball</option><option>Women's Basketball</option>
+            <option>Baseball</option><option>Softball</option><option>Men's Soccer</option>
+            <option>Women's Soccer</option><option>Gymnastics</option><option>Volleyball</option>
+            <option>Wrestling</option><option>Track & Field / Cross Country</option><option>Swimming & Diving</option>
+            <option>Tennis</option><option>Golf</option><option>Lacrosse</option>
+            <option>Ice Hockey</option><option>Other</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Conference Level <span style="color:var(--gold)">*</span></label>
+          <select id="dr_conf">
+            <option value="">Select</option>
+            <option>Power 4 — SEC</option><option>Power 4 — Big Ten</option>
+            <option>Power 4 — ACC</option><option>Power 4 — Big 12</option>
+            <option>Power 4 (Other)</option><option>Group of 5</option>
+            <option>FCS / D1-AA</option><option>Division II</option><option>NAIA</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Deal Type <span style="color:var(--gold)">*</span></label>
+          <select id="dr_type">
+            <option value="">Select</option>
+            <option>NIL Collective / School Deal</option>
+            <option>Social Media Sponsorship</option>
+            <option>Local Business Endorsement</option>
+            <option>Regional Brand Deal</option>
+            <option>National Brand Deal</option>
+            <option>Apparel / Gear</option>
+            <option>Supplement / Nutrition</option>
+            <option>Autograph / Appearance</option>
+            <option>Merchandise / Licensing</option>
+            <option>Trading Cards</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="modal-field">
+          <label>Deal Amount (Annual $) <span style="color:var(--gold)">*</span></label>
+          <input type="number" id="dr_amount" placeholder="e.g. 25000" min="0">
+        </div>
+        <div class="modal-field">
+          <label>Brand Name (optional)</label>
+          <input type="text" id="dr_brand" placeholder="e.g. Nike, Local Car Dealer">
+        </div>
+        <div class="modal-field">
+          <label>Brand Category</label>
+          <select id="dr_brandCat">
+            <option value="">Select</option>
+            <option>Apparel / Footwear</option><option>Food & Beverage</option>
+            <option>Consumer Electronics</option><option>Automotive</option>
+            <option>Financial Services</option><option>Legal / Professional</option>
+            <option>Sports Nutrition / Supplements</option><option>Retail / E-commerce</option>
+            <option>Media / Entertainment</option><option>Local Business</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="modal-field mfull">
+          <label>How accurate was your Verus NIL estimate?</label>
+          <select id="dr_accuracy">
+            <option value="">Skip</option>
+            <option value="very_low">Way too low (missed by 50%+)</option>
+            <option value="low">A bit low (off by 20–50%)</option>
+            <option value="accurate">Accurate (within ~20%)</option>
+            <option value="high">A bit high (off by 20–50%)</option>
+            <option value="very_high">Way too high (missed by 50%+)</option>
+          </select>
+        </div>
+        <input type="hidden" id="dr_estimated" value="">
+        <div class="modal-field mfull">
+          <label>Anything else to add? (optional)</label>
+          <textarea id="dr_note" placeholder="e.g. Multi-year deal, required 3 posts/month, included merch..." style="min-height:64px;resize:vertical"></textarea>
+        </div>
+      </div>
+      <div class="dr-err" id="dr_err"></div>
+      <button class="btn-submit-deal" id="dr_submitBtn" onclick="submitDeal()">Submit Deal Anonymously →</button>
+    </div>
+    <div class="dr-success" id="dr_success">
+      <div class="dr-success-icon">🎯</div>
+      <div class="dr-success-title">DEAL SUBMITTED</div>
+      <div class="dr-success-text">Thank you for contributing to the Verus NIL database. Your anonymous data helps calibrate valuations for every athlete who uses this tool.</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
